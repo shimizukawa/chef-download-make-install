@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+package 'build-essential'  # for g++ compiler
+
 node.download_make_install.packages.each do |entry|
   url = (entry.is_a? String)? entry : entry[:url]
   download_make_install url do

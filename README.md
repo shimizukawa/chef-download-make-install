@@ -7,7 +7,7 @@ Requirements
 ------------
 
 #### packages
-- `build-essentials` - building some target source needs gcc and related headers.
+- `build-essential` - building some target source needs gcc/g++ and related headers.
 
 Attributes
 ----------
