@@ -59,6 +59,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
         end
       EOH
 
+      not_if "test -f #{archive_dir}/#{archive_file}"
       notifies :run, "execute[extract #{archive_file}]", :immediately
     end
 
