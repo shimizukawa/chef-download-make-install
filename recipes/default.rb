@@ -20,8 +20,16 @@
 package 'build-essential'  # for g++ compiler
 
 node.download_make_install.packages.each do |entry|
-  url = (entry.is_a? String)? entry : entry[:url]
+  if entry.is_a? String
+    url = entry
+    target = nil
+  else
+    url = entry[:url]
+    target = entry[:target]
+  end
+
   download_make_install url do
     install_prefix node.download_make_install.install_prefix
+    target target
   end
 end

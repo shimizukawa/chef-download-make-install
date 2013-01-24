@@ -26,6 +26,12 @@ Attributes
     <td>install path prefix</td>
     <td><tt>'/usr/local'</tt></td>
   </tr>
+  <tr>
+    <td><tt>['python_build']['packages']</tt></td>
+    <td>string</td>
+    <td>build target source definitions hash-array. hash include 'url' and 'target'. 'url' is target source file location, required. 'target' is expected installed file/directory, optional. if 'target' is omitted then try to download/install everytime. </td>
+    <td><tt>[]</tt></td>
+  </tr>
 </table>
 
 Usage
@@ -42,10 +48,10 @@ Just include `chefenv` in your node's `run_list`:
   ],
   "override_attributes" : {
     "download_make_install": {
-      "install_prefix" : '/usr/local/',
+      "install_prefix" : "/usr/local/",
       "packages": [
-        {:url => 'http://mecab.googlecode.com/files/mecab-0.994.tar.gz'},
-        {:url => 'http://mecab.googlecode.com/files/mecab-ipadic-2.7.0-20070801.tar.gz'}
+        {"url": "http://mecab.googlecode.com/files/mecab-0.994.tar.gz", "target": "/usr/local/lib/libmecab.so"},
+        {"url": "http://mecab.googlecode.com/files/mecab-ipadic-2.7.0-20070801.tar.gz", "target": "/usr/local/lib/mecab"}
       ]
     }
   }

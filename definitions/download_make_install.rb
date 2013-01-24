@@ -9,7 +9,7 @@ EXT_TYPE_CMD = {
 }
 EXT_TYPES = EXT_TYPE_CMD.keys.collect{|k| [k.length, k]}.sort.reverse.collect{|n,k|k}
 
-define :download_make_install, :action => :build, :install_prefix => '/usr/local' do
+define :download_make_install, :action => :build, :install_prefix => '/usr/local', :target => nil do
 
   def make_extract_command(path)
     lpath = path.downcase
@@ -40,6 +40,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
   end
 
   install_prefix = params[:install_prefix]
+  target = params[:target]
 
   extract_command = make_extract_command(archive_file)
   extract_path = "#{archive_dir}/#{extract_name(archive_file)}"
@@ -59,7 +60,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
         end
       EOH
 
-      not_if "test -f #{archive_dir}/#{archive_file}"
+      not_if {File.exists?("#{archive_dir}/#{archive_file}") or (target and File.exists?(target))}
       notifies :run, "execute[extract #{archive_file}]", :immediately
     end
 
@@ -67,7 +68,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
       #action :nothing
       cwd archive_dir
       command extract_command
-      not_if "test -d #{extract_path}"
+      not_if {File.exists?(extract_path) or (target and File.exists?(target))}
       notifies :run, "execute[configure #{archive_file}]", :immediately
     end
 
@@ -75,7 +76,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
       #action :nothing
       cwd extract_path
       command "./configure --prefix=#{install_prefix}"
-      not_if "test -f #{extract_path}/Makefile"
+      not_if {File.exists?("#{extract_path}/Makefile") or (target and File.exists?(target))}
       notifies :run, "execute[make #{archive_file}]", :immediately
     end
 
@@ -83,6 +84,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
       #action :nothing
       cwd extract_path
       command "make"
+      not_if {(target and File.exists?(target))}
       notifies :run, "execute[make install #{archive_file}]", :immediately
     end
 
@@ -90,12 +92,12 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
       #action :nothing
       cwd extract_path
       command "make install"
+      not_if {(target and File.exists?(target))}
       notifies :run, "execute[ldconfig #{archive_file}]", :immediately
     end
 
     execute "ldconfig #{archive_file}" do
       #action :nothing
-      cwd extract_path
       command "ldconfig"
     end
 
