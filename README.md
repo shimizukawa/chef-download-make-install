@@ -6,7 +6,7 @@ This cookbook run download target source, extract, configure, make, make install
 Requirements
 ------------
 
-#### packages
+#### cookbook
 - `build-essential` - building some target source needs gcc/g++ and related headers.
 
 Attributes

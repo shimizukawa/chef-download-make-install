@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-package 'build-essential'  # for g++ compiler
+require_recipe 'build-essential'  # for g++ compiler
 
 node.download_make_install.packages.each do |entry|
   if entry.is_a? String
