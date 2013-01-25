@@ -15,7 +15,7 @@ Attributes
 #### download-make-install::default
 
 `node['download_make_install']['install_prefix']` - install path prefix: default is '/usr/local'
-`node['download_make_install']['packages']` - build target source definitions hash-array. hash include few keys. `url` is target source file location, required. `target` is expected installed file/directory after installation, optional. if `target` is omitted then try to download/install everytime.
+`node['download_make_install']['packages']` - build target source definitions hash-array. hash include few keys. `url` is target source file location, required. `configure_options` value will pass-through to ./configure option, optional. `target` is expected installed file/directory after installation, optional. if `target` is omitted then try to download/install everytime.
 
 Usage
 -----
@@ -33,8 +33,16 @@ Include `download_make_install` in your node's `run_list` and set packages infor
     "download_make_install": {
       "install_prefix" : "/usr/local/",
       "packages": [
-        {"url": "http://mecab.googlecode.com/files/mecab-0.994.tar.gz", "target": "/usr/local/lib/libmecab.so"},
-        {"url": "http://mecab.googlecode.com/files/mecab-ipadic-2.7.0-20070801.tar.gz", "target": "/usr/local/lib/mecab"}
+        {
+          "url": "http://mecab.googlecode.com/files/mecab-0.994.tar.gz",
+          "configure_options": "--enable-utf8-only",
+          "target": "/usr/local/lib/libmecab.so"
+        },
+        {
+          "url": "http://mecab.googlecode.com/files/mecab-ipadic-2.7.0-20070801.tar.gz",
+          "configure_options": "--with-charset=utf8",
+          "target": "/usr/local/lib/mecab"
+        }
       ]
     }
   }

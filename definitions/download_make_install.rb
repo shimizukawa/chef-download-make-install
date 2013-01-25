@@ -9,7 +9,7 @@ EXT_TYPE_CMD = {
 }
 EXT_TYPES = EXT_TYPE_CMD.keys.collect{|k| [k.length, k]}.sort.reverse.collect{|n,k|k}
 
-define :download_make_install, :action => :build, :install_prefix => '/usr/local', :target => nil do
+define :download_make_install, :action => :build, :install_prefix => '/usr/local', :configure_options => nil, :target => nil do
 
   def make_extract_command(path)
     lpath = path.downcase
@@ -40,6 +40,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
   end
 
   install_prefix = params[:install_prefix]
+  configure_options = params[:configure_options]
   target = params[:target]
 
   extract_command = make_extract_command(archive_file)
@@ -75,7 +76,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
     execute "configure #{archive_file}" do
       #action :nothing
       cwd extract_path
-      command "./configure --prefix=#{install_prefix}"
+      command "./configure --prefix=#{install_prefix} #{configure_options}"
       not_if {File.exists?("#{extract_path}/Makefile") or (target and File.exists?(target))}
       notifies :run, "execute[make #{archive_file}]", :immediately
     end
