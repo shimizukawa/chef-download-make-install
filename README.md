@@ -35,7 +35,7 @@ Include `download_make_install` in your node's `run_list` and set packages infor
       "packages": [
         {
           "url": "http://mecab.googlecode.com/files/mecab-0.994.tar.gz",
-          "configure_options": "--enable-utf8-only",
+          "configure_options": "--with-charset=utf8 --enable-utf8-only",
           "target": "/usr/local/lib/libmecab.so"
         },
         {
