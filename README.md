@@ -12,33 +12,16 @@ Requirements
 Attributes
 ----------
 
-#### chefenv::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['python_build']['install_prefix']</tt></td>
-    <td>string</td>
-    <td>install path prefix</td>
-    <td><tt>'/usr/local'</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['python_build']['packages']</tt></td>
-    <td>string</td>
-    <td>build target source definitions hash-array. hash include 'url' and 'target'. 'url' is target source file location, required. 'target' is expected installed file/directory, optional. if 'target' is omitted then try to download/install everytime. </td>
-    <td><tt>[]</tt></td>
-  </tr>
-</table>
+#### download-make-install::default
+
+`node['download_make_install']['install_prefix']` - install path prefix: default is '/usr/local'
+`node['download_make_install']['packages']` - build target source definitions hash-array. hash include few keys. `url` is target source file location, required. `target` is expected installed file/directory after installation, optional. if `target` is omitted then try to download/install everytime.
 
 Usage
 -----
-#### chefenv::default
+#### download-make-install::default
 
-Just include `chefenv` in your node's `run_list`:
+Include `download_make_install` in your node's `run_list` and set packages information:
 
 ```json
 {
