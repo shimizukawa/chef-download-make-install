@@ -27,7 +27,7 @@ Include `download_make_install` in your node's `run_list` and set packages infor
 {
   "name":"my_node",
   "run_list": [
-    "recipe[build-python]"
+    "recipe[download-make-install]"
   ],
   "override_attributes" : {
     "download_make_install": {
@@ -42,6 +42,10 @@ Include `download_make_install` in your node's `run_list` and set packages infor
           "url": "http://mecab.googlecode.com/files/mecab-ipadic-2.7.0-20070801.tar.gz",
           "configure_options": "--with-charset=utf8",
           "target": "/usr/local/lib/mecab"
+        },
+        {
+          "url": "http://www.sqlite.org/2013/sqlite-autoconf-3080200.tar.gz",
+          "target": "/usr/local/bin/sqlite3"
         }
       ]
     }
