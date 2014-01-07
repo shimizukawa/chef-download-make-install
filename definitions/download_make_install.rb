@@ -62,43 +62,35 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
       EOH
 
       not_if {File.exists?("#{archive_dir}/#{archive_file}") or (target and File.exists?(target))}
-      notifies :run, "execute[extract #{archive_file}]", :immediately
     end
 
     execute "extract #{archive_file}" do
-      #action :nothing
       cwd archive_dir
       command extract_command
       not_if {File.exists?(extract_path) or (target and File.exists?(target))}
-      notifies :run, "execute[configure #{archive_file}]", :immediately
     end
 
     execute "configure #{archive_file}" do
-      #action :nothing
       cwd extract_path
       command "./configure --prefix=#{install_prefix} #{configure_options}"
       not_if {File.exists?("#{extract_path}/Makefile") or (target and File.exists?(target))}
-      notifies :run, "execute[make #{archive_file}]", :immediately
     end
 
     execute "make #{archive_file}" do
-      #action :nothing
       cwd extract_path
       command "make"
       not_if {(target and File.exists?(target))}
-      notifies :run, "execute[make install #{archive_file}]", :immediately
     end
 
     execute "make install #{archive_file}" do
-      #action :nothing
       cwd extract_path
       command "make install"
       not_if {(target and File.exists?(target))}
-      notifies :run, "execute[ldconfig #{archive_file}]", :immediately
+      notifies :run, "execute[ldconfig #{archive_file}]"
     end
 
     execute "ldconfig #{archive_file}" do
-      #action :nothing
+      action :nothing
       command "ldconfig"
     end
 
