@@ -86,7 +86,7 @@ define :download_make_install, :action => :build, :install_prefix => '/usr/local
       cwd extract_path
       command "make install"
       not_if {(target and File.exists?(target))}
-      notifies :run, "execute[ldconfig #{archive_file}]"
+      notifies :run, "execute[ldconfig #{archive_file}]", :immediately
     end
 
     execute "ldconfig #{archive_file}" do
